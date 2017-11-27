@@ -1,0 +1,25 @@
+<nav class="navbar navbar-dark navbar-expand bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand col-lg-2" href="/dashboard/index">Dashboard</a>
+    <ul class="navbar-nav col-lg-9">
+  
+      <li class="nav-item <%= (title=='Funcionários') ? 'active' : ''  %>">
+          <a href="/dashboard/employees" class="nav-link">Funcionários</a></li>
+          
+      <li class="nav-item <%= (title=='Pedidos') ? 'active' : ''  %>">
+        <a href="/dashboard/orders" class="nav-link">Pedidos</a></li>
+
+      <li class="nav-item <%= (title=='Delivery') ? 'active' : ''  %>">
+        <a href="/dashboard/delivery" class="nav-link">Delivery</a></li>
+
+      <li class="nav-item <%= (title=='Clientes') ? 'active' : ''  %>">
+        <a href="/dashboard/customers" class="nav-link">Clientes</a></li>
+
+    </ul>
+    <ul class="navbar-nav col-lg-2">
+      <li class="nav-item"><a href="#" class="nav-link"><%= user %></a></li>
+      <li class="nav-item"><a href="#" class="nav-link"> | </a></li>
+      <li class="nav-item"><a href="/logout" class="nav-link">Sair</a></li>
+    </ul>
+  </div>
+</nav>

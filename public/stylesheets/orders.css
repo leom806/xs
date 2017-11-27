@@ -1,0 +1,14 @@
+
+#ver_pedidos {
+  display: none;
+}
+
+.atendido {
+  color: #4ca74c;
+}
+
+@media screen  and (max-width: 770px){
+  #ver_pedidos {
+    display: block;
+  }
+}

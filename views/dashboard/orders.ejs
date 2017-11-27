@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <% include ../partials/_header.ejs %>
+    <link rel="stylesheet" href="/stylesheets/orders.css">
+  </head>
+<body>
+  <% include ../partials/_navbar.ejs %>
+  <div class="container-fluid">
+
+    <div class="row" id="sidebar">      
+      <nav class="col-md-3 hidden-xs-down bg-faded sidebar">
+        <div class="sidebar-header">
+          <h3>Novo Pedido</h3>
+        </div>
+        <div class="nav nav-pills flex-column">
+            <form class="form-group text-center" action="/dashboard/orders/new" method="post">
+              <input class="form-control" type="text" name="customer" placeholder="Cliente">
+              <select class="form-control" name="attendant">
+                <% for(var i=0; i<employees.length; i++) { %>
+                <option value="<%= employees[i]._id %>"><%= employees[i].name %></option>
+                <% } %>
+              </select>
+              <textarea name="description" class="form-control" cols="30" rows="7" placeholder="Descrição"></textarea>
+              <input class="btn btn-block btn-dark" type="submit" value="Adicionar">
+            </form>
+            <button id="ver_pedidos" class="btn btn-primary btn-block">Alternar</button>
+        </div>
+      </nav>
+    </div>
+
+    <main class="col-sm-12 offset-md-3 col-md-9">
+      <h3>Pedidos em Aberto</h3>
+      <section class="row text-center placeholders">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Atendente</th>
+                <th>Pedido</th>
+                <th>Opções</th>
+              </tr>
+            </thead>
+            <tbody>              
+              <% for(var i=0; i<orders.length; i++) { %>
+                <tr class="col-sm-3 placeholder text-left ">
+
+                  <td class="align-middle font-weight-bold"><%= orders[i].customer %></td>
+                  
+                  <!-- Nome do atendente pelo ObjectId -->
+                  <td class="align-middle ">
+                    <% 
+                      var name = "---";
+                      for(var j=0; j<employees.length; j++) { 
+                        if (employees[j]._id.toString() == orders[i].attendant) { 
+                          name = employees[j].name.split(' ')[0];
+                          break;
+                        } 
+                      } 
+                    %>
+                    <%= name %>
+                  </td>    
+                  
+                  <td><%- orders[i].description %></td>
+                  <td class="text-center ">
+                    <a class="<%= (orders[i].status==true) ? 'atendido' : '' %>" 
+                      href="/dashboard/orders/turn/<%= orders[i]._id %>">
+                      <%= (orders[i].status==false) ? 'Espera' : 'Atendido' %>
+                    </a>
+                    
+                    <% if(orders[i].status==false) { %>
+                      <span> | </span>
+                      <a class="excluir" href="/dashboard/orders/del/<%= orders[i]._id %>">Excluir</a>
+                    <% } %>
+                  </td>
+                </tr>        
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  
+  <script src="/javascripts/jquery-2.2.4.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+
+        $('#ver_pedidos').click(function(){
+          console.log($('#sidebar').css('display'));
+          if($('#sidebar').css('display') == 'none'){
+            $('#sidebar').show();
+          }else{
+            $('#sidebar').hide();
+          }
+        })
+      });
+    </script>
+
+</body>
+</html>

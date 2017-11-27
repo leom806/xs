@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <% include ../partials/_header.ejs %>
+  </head>
+<body>
+  <% include ../partials/_navbar.ejs %>
+  <div class="container-fluid">
+      
+    <div class="row" id="sidebar">      
+      <nav class="col-md-3 hidden-xs-down bg-faded sidebar">
+        <div class="sidebar-header">
+          <h3>Novo Funcionário</h3>
+        </div>
+        <div class="nav nav-pills flex-column">
+            <form class="form-group text-center" action="/dashboard/employees/new" method="post">
+              <input class="form-control" type="text" name="name" placeholder="Nome">
+              <input class="form-control" type="text" name="role" placeholder="Função">
+              <input class="form-control" id="fone" type="tel" name="phone" placeholder="Telefone">
+              <input class="form-control" type="text" name="address" placeholder="Endereço">
+          
+              <input class="btn btn-block btn-dark" type="submit" value="Adicionar">
+            </form>
+        </div>
+      </nav>
+    </div>
+
+    <main class="col-sm-12 offset-md-3 col-md-9">
+      <h3>Funcionários</h3>
+      <section class="row text-center placeholders">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nome Completo</th>
+                <th>Função</th>
+                <th>Telefone</th>
+                <th>Endereço</th>
+                <th>Opções</th>
+              </tr>
+            </thead>
+            <tbody>              
+              <% for(var i=0; i<employees.length; i++) { %>
+                <tr class="col-sm-3 placeholder text-left ">
+                  <td class="align-middle font-weight-bold"><%= employees[i].name %></td>
+                  <td class="align-middle "><%= employees[i].role %></td>    
+                  <td class="text-center "><%= employees[i].phone %></td>
+                  <td><%= employees[i].address %></td> 
+                  <td class="text-center "><a class="excluir"
+                    href="/dashboard/employees/del/<%= employees[i]._id %>">Excluir</a></td>
+                </tr>        
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    </div>
+
+  <script src="/javascripts/jquery-2.2.4.min.js"></script>
+  <script src="/javascripts/jquery-mask.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <script>
+    $(function(){
+      $('#fone').mask('(00) 0000-0000');
+    });
+  </script>
+</body>
+</html>

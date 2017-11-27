@@ -1,0 +1,40 @@
+.container-fluid {
+  padding-top: 10px;  
+}
+
+.sidebar {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  top: 50px;
+  padding-top: 15px;
+  background-color: #e1ebea;
+  border-right: 1px solid #618596;
+  z-index: 2;
+}
+
+.sidebar input, textarea, select{
+  box-shadow: none !important;
+  margin-bottom: 1em;
+}
+
+.table-striped > thead > tr:nth-child(2n+1) > th{
+  border-color: #618596;
+  border-bottom-width: 1px; 
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #e1ebea;
+}
+
+a {
+  color: #183c63;
+}
+
+.excluir {
+  color: #8d1616;
+}
+
+.excluir:hover {
+  color: #8d1616;
+}
