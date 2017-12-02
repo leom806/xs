@@ -1,4 +1,5 @@
 var express = require('express')
+  , app = express()
   , load = require('express-load')
   , path = require('path')
   , favicon = require('serve-favicon')
@@ -9,8 +10,19 @@ var express = require('express')
   , session = require('express-session')({
       secret: ";dqE%K]C8mC>5a}w"
     })
-  , app = express();
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server)
+  ;
 
+  /**
+   *  Configurações do Sockets.IO
+   */
+  io.sockets.on('connection', function(client){
+    client.on('sync-orders-server', function(){
+      client.emit('sync-orders');
+      client.broadcast.emit('sync-orders');
+    });
+  });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,3 +65,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+module.exports.server = server; 

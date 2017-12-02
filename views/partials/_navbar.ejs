@@ -1,8 +1,21 @@
-<nav class="navbar navbar-dark navbar-expand bg-dark fixed-top">
-  <div class="container">
+<nav class="navbar navbar-dark navbar-expand-md bg-dark fixed-top">
+
+  <button class="navbar-toggler collapsed" 
+          type="button" 
+          data-toggle="collapse" 
+          data-target="#nav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation">
+
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="container collapse-navbar collapse" id="nav">    
+
     <a class="navbar-brand col-lg-2" href="/dashboard/index">Dashboard</a>
+
     <ul class="navbar-nav col-lg-9">
-  
       <li class="nav-item <%= (title=='Funcionários') ? 'active' : ''  %>">
           <a href="/dashboard/employees" class="nav-link">Funcionários</a></li>
           
@@ -14,12 +27,13 @@
 
       <li class="nav-item <%= (title=='Clientes') ? 'active' : ''  %>">
         <a href="/dashboard/customers" class="nav-link">Clientes</a></li>
-
     </ul>
+
     <ul class="navbar-nav col-lg-2">
       <li class="nav-item"><a href="#" class="nav-link"><%= user %></a></li>
       <li class="nav-item"><a href="#" class="nav-link"> | </a></li>
       <li class="nav-item"><a href="/logout" class="nav-link">Sair</a></li>
     </ul>
+
   </div>
 </nav>
